@@ -8,8 +8,9 @@ and on and on*/
 fn main() {
     println!("Hello, world!");
     println!("I am person of this world!");
-    formatted();
-    debug();
+    //formatted();
+    //debug();
+    display();
 }
 
 
@@ -87,5 +88,83 @@ fn debug(){
     
     //this is what it would look like unpretty printed
     println!("{:?}", peter);
+}
+
+///Exercise 1.2.2 Display
+
+//the advantage of Display over Debug is that it can look cleaner
+//and more compact. We do this by manually implementing fmt::Display
+
+//here we are importing the fmt module
+use std::fmt;
+
+struct StructureTwo(i32);
+
+//here we will implment the fmt trait for the Structure struct
+impl fmt::Display for StructureTwo {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+#[derive(Debug)]
+struct MinMax(i64, i64);
+
+impl fmt::Display for MinMax {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.0, self.1)
+    }
+}
+
+#[derive(Debug)]
+struct Point2D {
+    x: f64,
+    y: f64,
+}
+
+impl fmt::Display for Point2D {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "x: {}, y:{}", self.x, self.y)
+    }
+}
+
+#[derive(Debug)]
+struct Complex {
+    r: f64,
+    c: f64,
+}
+
+impl fmt::Display for Complex {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{} + {}i", self.r, self.c)
+    }
+}
+
+fn display(){
+    println!("{}", StructureTwo(4));
+    
+    let minmax = MinMax(0, 14);
+    
+    println!("Compare structures:");
+    println!("Display: {}", minmax);
+    println!("Dispaly: {:?}", minmax);
+    
+    let big_range = MinMax(-300, 300);
+    let small_range = MinMax(-3, 3);
+    
+    println!("The bigg range is {big} and the small is {small}",
+        small = small_range,
+        big = big_range);
+    
+    let point = Point2D {x: 3.3, y: 7.2};
+    
+    println!("Compare points:");
+    println!("Display: {}", point);
+    println!("Debug: {:?}", point);
+    
+    let complex = Complex {r: 3.3, c: 7.2};
+    println!("Compare complex");
+    println!("Display: {}", complex);
+    println!("Debug: {:?}", complex);
 }
 
