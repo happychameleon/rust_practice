@@ -9,6 +9,7 @@ fn main() {
     println!("Hello, world!");
     println!("I am person of this world!");
     formatted();
+    debug();
 }
 
 
@@ -46,3 +47,45 @@ fn formatted(){
     let pi = 3.142592;
     println!("here is some pi with a precision of {prec}: {number:.prec$}", prec=5, number=pi);
 }
+
+///Exercise 1.2.1 Debug
+#[derive(Debug)]
+struct Structure(i32);
+
+#[derive(Debug)]
+struct Deep(Structure);
+
+#[derive(Debug)]
+struct Person <'a> {
+    name: &'a str,
+    age: u8
+}
+
+fn debug(){
+    //the {:?} is a speciall debug formater that works very much
+    //like the normal print formater
+    println!("{:?} months in a year.", 12);
+    println!("{1:?} {0:?} is the {actor:?} name.",
+        "Slater",
+        "Christian",
+        actor="actor's");
+    
+    //thanks to the derive attribut this struct is printable
+    println!("Now {:?} will print!", Structure(3));
+    
+    //drive however does not permitt you to control how the output looks.
+    println!("Now {:?} will print!", Deep(Structure(7)));
+    
+    //rust does give one the option for "pretty printing"
+    //the formater {:#?}
+    let name = "peter";
+    let age = 27;
+    let peter = Person { name, age};
+    
+    //pretty print
+    println!("{:#?}", peter);
+    
+    //this is what it would look like unpretty printed
+    println!("{:?}", peter);
+}
+
