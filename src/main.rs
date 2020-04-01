@@ -15,7 +15,8 @@ fn main() {
     //primitives();
     //lit_op();
     //tuples();
-    arsli();
+    //arsli();
+    structures();
 }
 
 
@@ -413,5 +414,113 @@ fn arsli() {
     
     // Out of bound indexing causes compile error
     //println!("{}", xs[5]);
+}
+
+/// Custom Types can be created with the keywords struct (define a structure)
+/// and enum (define an enumeration),
+/// Constants can be created with the keywords const and static.
+
+/// 3.1 Structures
+
+#[derive(Debug)]
+struct PersonOne<'a> {
+    // The 'a defines a lifetime
+    name: &'a str,
+    age: u8,
+}
+
+// A unit struct
+struct Nil;
+
+// A tuple struct
+struct Pair(i32, f32);
+
+// A struct with two fields
+#[derive(Debug)]
+struct Point {
+    x: f32,
+    y: f32,
+}
+
+// Structs can be reused as fields of another struct
+#[allow(dead_code)]
+#[derive(Debug)]
+struct Rectangle {
+    // A rectangle can be specified by where the top left and botoom right
+    // corners are in space.
+    top_left: Point,
+    bottom_right: Point,
+}
+
+fn rect_area (rect: &Rectangle) -> f32 {
+    let Rectangle {top_left, bottom_right} = rect;
+    let a = bottom_right.x - top_left.x;
+    let b = top_left.y - bottom_right.y;
+    let area = a * b;
+    return area;
+}
+
+fn square(point: &Point, l: f32) -> Rectangle {
+    let _square = Rectangle {
+        top_left: Point {x: point.x, y: point.y + l},
+        bottom_right: Point {x: point.x + l, y: point.y},
+    };
+    return _square;
+}
+
+fn structures() {
+    // Create struct with field init shorthand
+    let name = "Peter";
+    let age = 27;
+    let peter = PersonOne { name, age };
+    
+    // Print debug struct
+    println!("{:?}", peter);
+    
+    // Instantiate a `Point`
+    let point: Point = Point {x: 10.3, y: 0.4};
+    
+    // Access the fields of the point
+    println!("point coordinates: ({}, {})", point.x, point.y);
+    
+    // Make a new point by using struct update syntax to use the fields of our
+    // other one
+    let bottom_right = Point { x: 5.2, ..point };
+    
+    // `bottom_right.y` will be the same as `point.y` because we used that field
+    // from `point`
+    println!("second point: ({}, {})", bottom_right.x, bottom_right.y);
+    
+    // Destructure the point using a `let` binding
+    let Point { x: top_edge, y: left_edge } = point;
+    
+    let _rectangle = Rectangle {
+        // struct instantiation is an expression too
+        top_left: Point { x: left_edge, y: top_edge},
+        bottom_right: bottom_right,
+    };
+    
+    println!("{:?}", _rectangle);
+    
+    // Instantiate a unit struct
+    let _nil = Nil;
+    
+    // Instantiate a tuple struct
+    let pair = Pair(1, 0.1);
+    
+    // Access the fields of a tuple struct
+    println!("pair contains {:?} and {:?}", pair.0, pair.1);
+    
+    // Destructure a tuple struct
+    let Pair(integer, decimal) = pair;
+    
+    println!("pair contains {:?} and {:?}", integer, decimal);
+    
+    // Calculate area of Rectangle
+    println!("the size of the Rectangle is: {}", rect_area(&_rectangle));
+    
+    let point_two = Point {x: -1.0, y: -1.0};
+    // Generate a square
+    println!("{:?}", square(&point_two, 2.0));
 }
 
