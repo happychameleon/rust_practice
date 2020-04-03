@@ -18,7 +18,8 @@ fn main() {
     //arsli();
     //structures();
     //enums();
-    enumUse();
+    //enumUse();
+    clike();
 }
 
 
@@ -631,5 +632,30 @@ fn enumUse() {
         Civilian => println!("Civilians work!"),
         Soldier  => println!("Soldiers fight!"),
     }
+}
+
+/// 3.2.2 C-like
+
+// enum with implicit discriminator (starts at 0)
+enum Number {
+    Zero,
+    One,
+    Two,
+}
+
+// enum with explicit discriminator
+enum ColorTwo {
+    Red = 0xff0000,
+    Green = 0x00ff00,
+    Blue = 0x0000ff,
+}
+
+fn clike() {
+    // `enums` can be cast as integers.
+    println!("zero is {}", Number::Zero as i32);
+    println!("one is {}", Number::One as i32);
+    
+    println!("roses are #{:06x}", ColorTwo::Red as i32);
+    println!("violets are #{:06x}", ColorTwo::Blue as i32);
 }
 
