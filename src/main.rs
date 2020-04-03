@@ -17,7 +17,8 @@ fn main() {
     //tuples();
     //arsli();
     //structures();
-    enums();
+    //enums();
+    enumUse();
 }
 
 
@@ -592,5 +593,43 @@ fn enums() {
     // We can refer to each variant via its alias, not its long and inconvenient
     // name.
     let x = Operations::Add;
+}
+
+
+/// 3.2.1 use
+
+enum Status {
+    Rich,
+    Poor,
+}
+
+enum Work {
+    Civilian,
+    Soldier,
+}
+
+fn enumUse() {
+    // Explicitly `use` each name so they are available without
+    // manual scoping.
+    use crate::Status::{Poor, Rich};
+    // Automatically `use` each name inside `Work`.
+    use crate::Work::*;
+    
+    // Equivalent to `Status::Poor`.
+    let status = Poor;
+    // Equivalent to `Work::Civilian`.
+    let work = Civilian;
+    
+    match status {
+        // Note the lack of scoping because fo the explicit `use` above.
+        Rich => println!("The rich have lots of money!"),
+        Poor => println!("The poor have no money..."),
+    }
+    
+    match work {
+        // Note the lack of scoping.
+        Civilian => println!("Civilians work!"),
+        Soldier  => println!("Soldiers fight!"),
+    }
 }
 
