@@ -20,7 +20,8 @@ fn main() {
     //enums();
     //enumUse();
     //clike();
-    enumTestcase();
+    //enumTestcase();
+    constants();
 }
 
 
@@ -729,4 +730,28 @@ fn enumTestcase() {
     println!("linked list has length: {}", list.len());
     println!("{}", list.stringify());
 }
+
+/// 3.3 constants
+
+// Globals are declared outside all other scopes.
+static LANGUAGE: &str = "Rust";
+const THRESHOLD: i32 = 10;
+
+fn is_big(n: i32) -> bool {
+    // Access constant in some function
+    n > THRESHOLD
+}
+
+fn constants() {
+    let n = 16;
+    
+    // Access constant in the main thread
+    println!("This is {}", LANGUAGE);
+    println!("The threshold is {}", THRESHOLD);
+    println!("{} is {}", n, if is_big(n) {"big"} else {"small"});
+    
+    // Error! Cannof modify ka `const`.
+    //THRESHOLD = 5;
+}
+
 
