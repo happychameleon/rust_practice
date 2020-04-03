@@ -19,7 +19,8 @@ fn main() {
     //structures();
     //enums();
     //enumUse();
-    clike();
+    //clike();
+    enumTestcase();
 }
 
 
@@ -433,7 +434,7 @@ struct PersonOne<'a> {
 }
 
 // A unit struct
-struct Nil;
+struct NilOne;
 
 // A tuple struct
 struct Pair(i32, f32);
@@ -506,7 +507,7 @@ fn structures() {
     println!("{:?}", _rectangle);
     
     // Instantiate a unit struct
-    let _nil = Nil;
+    let _nil = NilOne;
     
     // Instantiate a tuple struct
     let pair = Pair(1, 0.1);
@@ -657,5 +658,75 @@ fn clike() {
     
     println!("roses are #{:06x}", ColorTwo::Red as i32);
     println!("violets are #{:06x}", ColorTwo::Blue as i32);
+}
+
+/// 3.2.3 Testcase: linked-list
+
+use crate::ListNew::*;
+
+enum ListNew {
+    // Cons: Tuple struct that wraps an element and apointer to the next node
+    Cons(u32, Box<ListNew>),
+    // Nil: A node that signifies the end of the linked list
+    Nil,
+}
+
+// Methods can be attached to an enum
+impl ListNew {
+    // Create an empty list
+    fn new() -> ListNew {
+        // `Nil` has type `ListNew`
+        Nil
+    }
+    
+    // Consume a list, and return the same list with a new element at tis front
+    fn prepend(self, elem: u32) -> ListNew {
+        // `Cons` also has type List
+        Cons(elem, Box::new(self))
+    }
+    
+    // Return the length of the list
+    fn len(&self) -> u32 {
+        // `self` has to be matched, because the behavior of this method
+        // depends on the variant of `self`
+        // `self` has type `&List`, and `*self` has type `List`, maching on a
+        // concrete type `T` is preferred over a match on a reference `&T`
+        match *self {
+            // Can't take ownership of the tail, because `self` is borrowed;
+            // instead take a reference to the tail
+            Cons(_, ref tail) => 1 + tail.len(),
+            // Base Case: An empty list has zero lenght
+            Nil => 0
+        }
+    }
+    
+    // Return representation of the list as a (heap allocated) string
+    fn stringify(&self) -> String {
+        match *self {
+            Cons(head, ref tail) => {
+                // `format!` is similar to `print!`, but returns a heap
+                // allocated string instead of printing to the console
+                format!("{}, {}", head, tail.stringify())
+            },
+            Nil => {
+                format!("Nil")
+            },
+        }
+    }
+}
+
+fn enumTestcase() {
+    // Create an empty linked list
+    let mut list = ListNew::new();
+    
+    // Prepend some elemenets
+    list = list.prepend(1);
+    list = list.prepend(2);
+    list = list.prepend(3);
+    list = list.prepend(4);
+    
+    // Show the final state of the list
+    println!("linked list has length: {}", list.len());
+    println!("{}", list.stringify());
 }
 
