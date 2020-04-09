@@ -31,7 +31,8 @@ fn main() {
     //casting();
     //literals();
     //inference();
-    aliasing();
+    //aliasing();
+    from_and_into();
 }
 
 
@@ -963,5 +964,30 @@ fn aliasing() {
         nanoseconds,
         inches,
         nanoseconds + inches);
+}
+
+/// 6. Conversion, 6.1 From and Into
+
+use std::convert::From;
+
+#[derive(Debug)]
+struct NumberTwo {
+     value: i32,
+}
+
+impl From<i32> for NumberTwo {
+    fn from(item: i32) -> Self {
+        NumberTwo { value: item }
+    }
+}
+
+fn from_and_into() {
+    let num = NumberTwo::from(30);
+    println!("My number is {:?}", num);
+    
+    let int = 5;
+    
+    let num: NumberTwo = int.into();
+    println!("My number is {:?}", num);
 }
 
