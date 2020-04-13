@@ -32,7 +32,10 @@ fn main() {
     //literals();
     //inference();
     //aliasing();
-    from_and_into();
+    //from_and_into();
+    //tryfrom_tryinto();
+    //to_from_strings();
+    flow_control();
 }
 
 
@@ -989,5 +992,94 @@ fn from_and_into() {
     
     let num: NumberTwo = int.into();
     println!("My number is {:?}", num);
+}
+
+/// 6.2 TryFrom and TryInto
+
+use std::convert::TryFrom;
+use std::convert::TryInto;
+
+#[derive(Debug, PartialEq)]
+struct EvenNumber(i32);
+
+impl TryFrom<i32> for EvenNumber {
+    type Error = ();
+    
+    fn try_from(value: i32) -> Result<Self, Self::Error> {
+        if value % 2 == 0 {
+            Ok(EvenNumber(value))
+        } else {
+            Err(())
+        }
+    }
+}
+
+fn tryfrom_tryinto() {
+    // TryFrom
+    
+    assert_eq!(EvenNumber::try_from(8), Ok(EvenNumber(8)));
+    assert_eq!(EvenNumber::try_from(5), Err(()));
+    
+    // TryInto
+    
+    let result: Result<EvenNumber, ()> = 8i32.try_into();
+    assert_eq!(result, Ok(EvenNumber(8)));
+    println!("{:?}", result);
+    let result: Result<EvenNumber, ()> = 5i32.try_into();
+    assert_eq!(result, Err(()));
+    println!("{:?}", result);
+}
+
+/// 6.3 to and from strings
+
+struct Circle {
+    radius: i32
+}
+
+impl fmt::Display for Circle {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Circle of radius {}", self.radius)
+    }
+}
+
+fn to_from_strings() {
+    let circle = Circle { radius: 6 };
+    println!("{}", circle.to_string());
+    
+    let parsed: i32 = "5".parse().unwrap();
+    let turbo_parsed = "10".parse::<i32>().unwrap();
+    
+    let sum = parsed + turbo_parsed;
+    println!("Sum: {:?}", sum);
+}
+
+/// 8. Flow of Control, 8.1 if/else, 8.2 loop, 8.3 while, 8.4 for and range,
+/// 8.5 match, 8.6 if let, while let
+
+fn flow_control() {
+    let n = 5;
+    
+    if n < 0 {
+        print!("{} is negative", n);
+    } else if n > 0 {
+        print!("{} is positive", n);
+    } else {
+        print!("{} is zero", n);
+    }
+    
+    let big_n = 
+        if n < 10 && n > -10 {
+            println!(", and is a small number, increase ten-fold");
+            
+            // This expression returns an `i32`.
+            10 * n
+        } else {
+            println!(", and is a big number, halve the number");
+            
+            // This expresssion must return an `i32` as well.
+            n / 2
+        };
+        
+    println!("{} -> {}", n, big_n);
 }
 
