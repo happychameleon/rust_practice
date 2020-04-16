@@ -1128,5 +1128,42 @@ fn flow_control() {
     }
     
     println!("Exited the outer loop");
+    
+    // Returning from loops, if you want to return a value form a loop,
+    // by putting it after the break the loop function will return the value
+    
+    let mut counter = 0;
+    
+    let result = loop {
+         counter += 1;
+         
+         if counter == 10 {
+             break counter * 2;
+         }
+    };
+    
+    println!("result is: {}", result);
+    
+    // with while one can run a loop as long as a condition is true
+    
+    // A counter varialbe
+    let mut n = 1;
+    
+    // Loop while `n` is less than 101
+    
+    while n < 101 {
+        if n % 15 == 0 {
+            println!("fizzbuzz");
+        } else if n % 3 == 0 {
+            println!("fizz");
+        } else if n % 5 == 0 {
+            println!("buzz");
+        } else {
+            println!("{}", n);
+        }
+        
+        // Increment counter
+        n += 1;
+    }
 }
 
