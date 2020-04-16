@@ -1106,5 +1106,27 @@ fn flow_control() {
             break;
         }
     }
+    
+    // Nested loops
+    count = 0;
+    'outer: loop {
+        println!("Entered the outer loop");
+        
+        'inner: loop {
+            println!("Entered the inner loop");
+            count += 1;
+            // This would break only the inner loop
+            if count < 5 {
+                break;
+            } else {
+                println!("this is the {}th loop, breaking out of the outer loop", count);
+                // This breaks the outer loop
+                break 'outer;
+            }
+        }
+        println!("Just finished with the inner loop, count: {}", count)
+    }
+    
+    println!("Exited the outer loop");
 }
 
