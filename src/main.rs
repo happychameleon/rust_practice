@@ -1212,6 +1212,31 @@ fn flow_control() {
     
     println!("names: {:?}", names);
     
+    // 8.5 match
+    let number = 13;
+    
+    println!("Tell me about {}", number);
+    
+    match number {
+        // Match a single value
+        1 => println!("One!"),
+        // Mach several values
+        2 | 3 | 5 | 7 | 11 => println!("Thsi is a prime") ,
+        // Match an inclusive range
+        13..=19 => println!("A teen"),
+        // Handle the rest of cases
+        _ => println!("I don't yet see whats special about this one"),
+    }
+    
+    let boolean = true;
+    // Match is an expression too
+    let binary = match boolean {
+        // The arms of a match must cover all the possible values
+        false => 0,
+        true => 1,
+    };
+    
+    println!("{} -> {}", boolean, binary);
     
 }
 
