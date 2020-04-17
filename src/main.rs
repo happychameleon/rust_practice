@@ -1058,6 +1058,19 @@ fn to_from_strings() {
 /// 8. Flow of Control, 8.1 if/else, 8.2 loop, 8.3 while, 8.4 for and range,
 /// 8.5 match, 8.6 if let, while let
 
+enum Color3 {
+    // These 3 are specified solely by their name.
+    Red,
+    Blue,
+    Green,
+    // These likewise tie `u32` tuples to different names: color models.
+    RGB(u32, u32, u32),
+    HSV(u32, u32, u32),
+    HSL(u32, u32, u32),
+    CMY(u32, u32, u32),
+    CMYK(u32, u32, u32, u32),
+}
+
 fn flow_control() {
     let n = 5;
     
@@ -1249,6 +1262,28 @@ fn flow_control() {
         (x, 0) => println!("`x` is `{:?}` and last is `0`", x),
         _      => println!("It doesn't matter what they are"),
         // `_` means don't bind the value to a variable
-    }    
+    }
+    
+    let color = Color3::RGB(122, 17, 40);
+    
+    println!("What color is it?");
+    // An `enum` can be destructured using a `match`.
+    match color {
+        Color3::Red => println!("The color is Red!"),
+        Color3::Blue => println!("The color is Blue!"),
+        Color3::Green => println!("The color is Green!"),
+        Color3::RGB(r, g, b) =>
+            println!("Red: {}, green: {}, and blue: {}!", r, g, b),
+        Color3::HSV(h, s, v) =>
+            println!("Hue: {}, saturation: {}, value: {}!", h, s, v),
+        Color3::HSL(h, s, l) =>
+            println!("Hue: {}, saturation: {}, lightness: {}!", h, s, l),
+        Color3::CMY(c, m, y) =>
+            println!("Cyan: {}, magenta: {}, yellow:{}!", c, m, y),
+        Color3::CMYK(c, m, y, k) =>
+            println!("Cyan: {}, magenta: {}, yellow: {}, key (black): {}!",
+                c, m, y, k),
+        // Don't need another arm because all variants have been examined
+    }
 }
 
