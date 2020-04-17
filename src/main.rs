@@ -951,11 +951,13 @@ fn inference() {
     println!("{:?}", vec);
 }
 
-/// 5.4 Aliasing
+
 
 // `NanoSecond` is a new name for u`u64`.
 type NanoSecond = u64;
 type Inch = u64;
+
+/// 5.4 Aliasing
 
 fn aliasing() {
     let nanoseconds: NanoSecond = 5;
@@ -1165,5 +1167,51 @@ fn flow_control() {
         // Increment counter
         n += 1;
     }
+    
+    // for loops
+    
+    // `m` will take the values: 1, 2, ..., 100 in each iteration
+    for m in 1..=100 {
+        if m % 15 == 0 {
+            println!("fizzbuz");
+        } else if m % 3 == 0 {
+            println!("fizz");
+        } else if m % 5 == 0 {
+            println!("buzz");
+        } else {
+            println!("{}", m);
+        }
+    }
+    
+    // for and iterators
+    
+    let names = vec!["Bob", "Frank", "Ferris"];
+    
+    for name in names.iter() {
+        match name {
+            &"Ferris" => println!("There is a rustacean among us!"),
+            _ => println!("Hello {}", name),
+        }
+    }
+    
+    for name in names.into_iter() {
+        match name {
+            "Ferris" => println!("There is a rustacean among us!"),
+            _ => println!("Hello there {}", name),
+        }
+    }
+    
+    let mut names = vec!["Bob", "Frank", "Ferris"];
+    
+    for name in names.iter_mut() {
+        *name = match name {
+            &mut "Ferris" => "There is a rustacean among us!",
+            _ => "Hello there",
+        }
+    }
+    
+    println!("names: {:?}", names);
+    
+    
 }
 
