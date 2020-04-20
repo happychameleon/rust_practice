@@ -1360,5 +1360,20 @@ fn flow_control() {
         // this will give an error: pattern does not mention field `x`
         // Foo { y } => println!("y = {}", y)
     }
+    
+    // 8.5.2 Guards
+    
+    let pair_two = (3, 4);
+    
+    println!("Tell me about {:?}", pair_two);
+    
+    match pair_two {
+        (x, y) if x == y => println!("These are twins"),
+        // The ^ `if condition` part is a gurad
+        (x, y) if x + y == 0 => println!("Antimatter, kaboom!"),
+        (x, _) if x % 2 == 1 => println!("The first one is odd"),
+        _ => println!("No correlation..."),
+    }
+    
 }
 
