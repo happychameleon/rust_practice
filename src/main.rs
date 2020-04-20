@@ -1285,5 +1285,80 @@ fn flow_control() {
                 c, m, y, k),
         // Don't need another arm because all variants have been examined
     }
+    
+    // 8.5.1.3 pointers/ref
+    
+    // Assign a reference of type `i32`. The `&` signifies there
+    // is a referene being assigned.
+    let reference = &4;
+    
+    match reference {
+        // If `reference` is pattern matched against `&val`, it resttults
+        // in a comparison like:
+        // `&i32`
+        // `&val`
+        // ^ We see that if the matching `&`s are dropped, then the `i32`
+        // should be assigned to `val`.
+        &val => println!("Got a value via destructuring: {:?}", val)
+    }
+    
+    // To avoid the `&`, you dereference before matching.
+    
+    match *reference {
+        val => println!("Got a value via dereferencing: {:?}", val),
+    }
+    
+    // What if you don't start with a reference? `reference` was a `&`
+    // because the right side was already a reference. This is not
+    // a reference because the right side is not one.
+    let _not_a_reference = 3;
+    
+    // Rust provides `ref` for exaclty this purpose. It modifies the
+    // assignment so that a reference is created for the element; this
+    // reference is assigned.
+    let ref _is_a_reference = 3;
+    
+    // Accordingly, by difining 2 values without references, references
+    // can be retrived via `ref` and `ref mut`.
+    
+    let value = 5;
+    let mut mut_value = 6;
+    
+    // Use `ref` keyword to crate a reference.
+    match value {
+        ref r => println!("Got a reference to a vlaue: {:?}", r),
+    }
+    
+    // Use `ref mut` similarly.
+    match mut_value {
+        ref mut m => {
+            // Got a reference. Gotta dereference it befor we can
+            // add anything to it.
+            *m += 10;
+            println!("We added 10. `mut_value`: {:?}", m);
+        },
+    }
+    
+    // 8.5.1.4 Structs
+    
+    struct Foo {
+         x: (u32, u32),
+         y: u32,
+    }
+    
+    let foo = Foo { x: (1, 2), y: 3};
+    
+    match foo {
+        Foo { x: (1, b), y } => println!("First of x is 1, b = {}, y = {}", b, y),
+        
+        // you can destructure structs and rename the variables,
+        // the order is not important
+        Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),
+        
+        // and you can also ignore some variables:
+        Foo { y, .. } => println!("y = {}, we don't care about x", y),
+        // this will give an error: pattern does not mention field `x`
+        // Foo { y } => println!("y = {}", y)
+    }
 }
 
