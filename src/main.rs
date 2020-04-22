@@ -1080,6 +1080,12 @@ fn some_number() -> Option<u32> {
     Some(42)
 }
 
+enum Foo_two {
+    Bar,
+    Baz,
+    Qux(u32)
+}
+
 fn flow_control() {
     let n = 5;
     
@@ -1441,6 +1447,34 @@ fn flow_control() {
     } else {
         // The condition evaluated false. This branch is the default:
         println!("I don't like letters. Let's go with an emoticon :)!");
+    }
+    
+    // Create example variables
+    let a = Foo_two::Bar;
+    let b = Foo_two::Baz;
+    let c = Foo_two::Qux(100);
+    
+    // Variable a matches Foo::Bar
+    if let Foo_two::Bar = a {
+        println!("a is foobar");
+    }
+    
+    // Variable b does not match Foo::Bar
+    // So this will print nothing
+    if let Foo_two::Bar = b {
+        println!("b is foobar");
+    }
+    
+    // Variable c matches Foo::Qux which has a value
+    // Similar to Some() in the previous example
+    if let Foo_two::Qux(value @ 100) = c {
+        println!("c is one hundred");
+    }
+    
+    let d = Foo_two::Bar;
+    
+    if let Foo_two::Bar = d {
+        println!("d is foobar");
     }
 }
 
