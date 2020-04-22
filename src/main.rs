@@ -1476,5 +1476,26 @@ fn flow_control() {
     if let Foo_two::Bar = d {
         println!("d is foobar");
     }
+    
+    // 8.7 while let
+    
+    // Make `optional` of type `Option<i32>`
+    let mut optional = Some(0);
+    
+    // This reads: "while `let` destructures `optional` into
+    // `Some(i)`, evaluate the block (`{}`). Else `break`."
+    while let Some(i) = optional {
+        if i > 9 {
+            println!("Greater than 9, quit!");
+            optional = None;
+        } else {
+            println!("`i` is `{:?}`. Try again.", i);
+            optional = Some(i + 1);
+        }
+        // ^ less rightward drift match and doesn't require
+        // explicitly handling the failing case.
+    }
+    // ^ `if let` had additional option `else`/`else if`
+    // clauses. `while let` does not have these.
 }
 
