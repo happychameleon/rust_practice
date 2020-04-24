@@ -35,7 +35,8 @@ fn main() {
     //from_and_into();
     //tryfrom_tryinto();
     //to_from_strings();
-    flow_control();
+    //flow_control();
+    functioned_fizzbuzz();
 }
 
 
@@ -1497,5 +1498,45 @@ fn flow_control() {
     }
     // ^ `if let` had additional option `else`/`else if`
     // clauses. `while let` does not have these.
+}
+
+
+/// 9. functions
+
+fn functioned_fizzbuzz() {
+    // We can use this function here, and define it somewhere later
+    fizzbuzz_to(100);
+}
+
+// Function that returns a boolean value
+fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
+    // Corner case, early return
+    if rhs == 0 {
+        return false;
+    }
+    
+    // This is an expression, the `return` keyword is not necessary here
+    lhs % rhs == 0
+}
+
+// Function that "don't" return a value, actually return the unit type `()`
+fn fizzbuzz(n: u32) -> () {
+    if is_divisible_by(n, 15) {
+        println!("fizzbuzz");
+    } else if is_divisible_by(n, 3) {
+        println!("fizz");
+    } else if is_divisible_by(n, 5) {
+        println!("buzz");
+    } else {
+        println!("{}", n);
+    }
+}
+
+// When a function returns `()`, the return type can be omitted from the
+// signature
+fn fizzbuzz_to(n: u32) {
+      for n in 1..=n {
+          fizzbuzz(n);
+      }
 }
 
