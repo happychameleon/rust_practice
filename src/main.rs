@@ -36,7 +36,8 @@ fn main() {
     //tryfrom_tryinto();
     //to_from_strings();
     //flow_control();
-    functioned_fizzbuzz();
+    //functioned_fizzbuzz();
+    methods();
 }
 
 
@@ -1539,4 +1540,107 @@ fn fizzbuzz_to(n: u32) {
           fizzbuzz(n);
       }
 }
+
+/// 9.1 Methods
+/// Methods are the functions of an Oject. They have access to all the data of
+/// their object by using the self keyword and are defined in an impl block.
+
+struct Point_new {
+    x: f64,
+    y: f64,
+}
+
+// Implementation block, all `Point` methods go in here
+impl Point_new {
+    // This is a static method
+    // Static methods don't need to be called by an instance
+    // These methods are gnerally used as constructors
+    fn origin() -> Point_new {
+        Point_new { x: 0.0, y: 0.0 }
+    }
+    
+    // Another static method, taking two arguments:
+    fn new( x: f64, y: f64 ) -> Point_new {
+        Point_new { x: x, y: y }
+    }
+}
+
+struct Rectangle_new {
+    p1: Point_new,
+    p2: Point_new,
+}
+
+impl Rectangle_new {
+    // This is an instance method
+    // `&self` is sugar for `self: &Self`, where `Self` is the type of the
+    // caller object. In this case `Self` = `Rectangle`
+    fn area(&self) -> f64 {
+        // `self` gives access to the struct fields via the dot operator
+        let Point_new { x: x1, y: y1} = self.p1;
+        let Point_new { x: x2, y: y2} = self.p2;
+        
+        // `abs` is a `f64` method that returns the absolute value of the
+        // caller
+        ((x1 - x2).abs() + (y1 - y2).abs())
+    }
+    
+    fn perimeter(&self) -> f64 {
+        let Point_new { x: x1, y: y1 } = self.p1;
+        let Point_new { x: x2, y: y2 } = self.p2;
+        
+        2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
+    }
+    
+    // This method requires the caller object to be mutable
+    // `&mut self` desugars to `self: &mut Self`
+    fn translate(&mut self, x: f64, y: f64) {
+        self.p1.x += x;
+        self.p2.x += x;
+        
+        self.p1.y += y;
+        self.p2.y += y;
+    }
+}
+
+// `Pair_new` owns resources: two heap allocated integers
+struct Pair_new(Box<i32>, Box<i32>);
+
+impl Pair_new {
+    // This method "consumes" the resources of the caller object
+    // `self` desugars to `self: Self`
+    fn destroy(self) {
+        // Destrucure `self`
+        let Pair_new(first, second) = self;
+        
+        println!("Destroying Pair({}, {})", first, second);
+        
+        // `first` and `second` go out of scope and get freed
+    }
+}
+
+fn methods() {
+    let rectangle = Rectangle_new {
+        // Static methods are called using double colons
+        p1: Point_new::origin(),
+        p2: Point_new::new(3.0, 4.0),
+    };
+    
+    // Instance methods are called using the dot operator
+    // Note that the first argument `&self` is implicitly passed, ie.
+    // `rectangle.perimeter()` === `Rectangle::perimeter(&rectangle)`
+    println!("Rectangle perimeter: {}", rectangle.perimeter());
+    println!("Rectangle area: {}", rectangle.area());
+    
+    let mut square = Rectangle_new {
+        p1: Point_new::origin(),
+        p2: Point_new::new(1.0, 1.0),
+    };
+    
+    square.translate(1.0, 1.0);
+    
+    let pair = Pair_new(Box::new(1), Box::new(1));
+    
+    pair.destroy();
+}
+
 
