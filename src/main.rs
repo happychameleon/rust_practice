@@ -1670,6 +1670,17 @@ fn apply_fn<F>(f: F) where
     f();
 }
 
+// Define a function which takes a generic `F` argument
+// bounded by `Fn`, and calls it
+fn call_me<F: Fn()>(f: F) {
+    f();
+}
+
+// Define a wrapper function satisfying the `Fn` bound
+fn example_function() {
+    println!("I'm a function!");
+}
+
 fn closures() {
     // Increment via closures and functions.
     fn function (i: i32) -> i32 { i + 1  }
@@ -1821,5 +1832,13 @@ fn closures() {
     let print = || println!("{}", x);
     
     apply_fn(print);
+    
+    // 9.2.4 input functions
+    
+    // Define a closure satisfying the `Fn` bound
+    let closure = || println!("I'm a closure!");
+    
+    call_me(closure);
+    call_me(example_function);
 }
 
