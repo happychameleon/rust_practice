@@ -1681,6 +1681,24 @@ fn example_function() {
     println!("I'm a function!");
 }
 
+fn create_fn() -> impl Fn() {
+    let text = "Fn".to_owned();
+    
+    move || println!("This is a: {}", text)
+}
+
+fn create_fnmut() -> impl FnMut() {
+    let text = "FnMut".to_owned();
+    
+    move || println!("This is a: {}", text)
+}
+
+fn create_fnonce() -> impl FnOnce() {
+    let text = "FnOnce".to_owned();
+    
+    move || println!("This is a: {}", text)
+}
+
 fn closures() {
     // Increment via closures and functions.
     fn function (i: i32) -> i32 { i + 1  }
@@ -1840,5 +1858,15 @@ fn closures() {
     
     call_me(closure);
     call_me(example_function);
+    
+    // 9.2.5 As output parameters
+    
+    let fn_plain = create_fn();
+    let mut fn_mut = create_fnmut();
+    let fn_once = create_fnonce();
+    
+    fn_plain();
+    fn_mut();
+    fn_once();
 }
 
