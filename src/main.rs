@@ -1886,5 +1886,39 @@ fn closures() {
     println!("2 in array1: {}", array1.iter().any(|&x| x == 2));
     // `into_iter()` for arrays unusually yields `&i32`.
     println!("2 in array2: {}", array2.into_iter().any(|&x| x == 2));
+    
+    // 9.2.6.2 searching through iterators
+    
+    let vec3 = vec![1, 2, 3];
+    let vec4 = vec![4, 5, 6];
+    
+    // `iter()` for vecs yields `&i32`.
+    let mut iter = vec3.iter();
+    // `into_iter()` for vecs yields `i32`.
+    let mut into_iter = vec4.into_iter();
+    
+    // `iter()` for vecs yields `&i32`, and we want to reference one of its
+    // items, so we have to destructure `&&i32` to `i32`
+    println!("Find 2 in vec3: {:?}", iter.find(|&&x| x == 2));
+    // `into_iter()` for vecs yields `i32`, and we want to reference one of
+    // its items, so we have to destructure `&i32` to `i32`
+    println!("Find 2 in vec4: {:?}", into_iter.find(|&x| x == 2));
+    
+    let array3 = [1, 2, 3];
+    let array4 = [4, 5, 6];
+    
+    // `iter()` for arrays yields `&i32`
+    println!("Find 2 in array3: {:?}", array3.iter().find(|&&x| x == 2));
+    // `into_iter()` for arrays unusually yields `&i32`
+    println!("Find 2 in array4: {:?}", array4.into_iter().find(|&&x| x == 2));
+    
+    // `Iterator::position` gives you the index of an item
+    let vec = vec![1, 9, 3, 3, 13, 2];
+    
+    let index_of_first_even_number = vec.iter().position(|x| x % 2 == 0);
+    assert_eq!(index_of_first_even_number, Some(5));
+    
+    let index_of_first_negative_number = vec.iter().position(|x| x < &0);
+    assert_eq!(index_of_first_negative_number, None);
 }
 
